@@ -7,7 +7,7 @@ test('can query', async () => {
 
 test('syntax error', async () => {
   try {
-    const rows = await query('SELECT COUNT(* c FROM Songs;');
+    await query('SELECT COUNT(* c FROM Songs;');
   } catch (e) {
     expect(e.code).toMatch('ER_PARSE_ERROR');
   }
