@@ -72,14 +72,10 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{json,css,scss,md}": [
+    "*.{json,css}": [
       "prettier --single-quote --write"
     ],
-    "src/**/*.{js,jsx}": [
-      "eslint",
-      "prettier --single-quote --write"
-    ],
-    "server/**/*.js": [
+    "*.{js,jsx}": [
       "eslint",
       "prettier --single-quote --write"
     ]
