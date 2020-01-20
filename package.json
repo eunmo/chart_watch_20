@@ -18,7 +18,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint:src": "eslint src/**/*.{js,jsx}",
-    "lint:server": "eslint src/**/*.{js,jsx}"
+    "lint:server": "eslint src/**/*.{js,jsx}",
+    "test:server": "jest server --watch"
   },
   "eslintConfig": {
     "extends": [
