@@ -1,10 +1,9 @@
 const mysql = require('mysql');
-const util = require('util');
 
 const dbconfig = require('./db.json');
 
 const pool = mysql.createPool({
-  connectionLimit: 100, //important
+  connectionLimit: 100, // important
   host: dbconfig.host,
   user: dbconfig.user,
   password: dbconfig.password,
@@ -14,20 +13,21 @@ const pool = mysql.createPool({
   multipleStatements: true
 });
 
-const query = async (sql) => {
+const query = async sql => {
   try {
     const promise = new Promise((resolve, reject) => {
-      pool.query(sql, (error, results, fields) => {
+      pool.query(sql, (error, results) => {
         if (error) {
-          return reject(error);
+          reject(error);
+        } else {
+          resolve(results);
         }
-        resolve(results);
       });
     });
     const rows = await promise;
     return rows;
   } catch (err) {
-    console.log(`Database error while handling ${sql}`);
+    console.log(`Database error while handling ${sql}`); // eslint-disable-line no-console
     throw err;
   }
 };
