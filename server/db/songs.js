@@ -8,6 +8,16 @@ const getDetails = async ids => {
   return query(sql);
 };
 
+const addDetails = async songs => {
+  const rows = await getDetails(songs.map(s => s.id));
+  const map = new Map(songs.map(s => [s.id, s]));
+
+  rows.forEach(({ id, title, plays }) => {
+    map.get(id).title = title;
+    map.get(id).plays = plays;
+  });
+};
+
 const getArtists = async ids => {
   const sql = `
     SELECT SongId, ArtistId, name, feat, \`order\`
@@ -15,6 +25,33 @@ const getArtists = async ids => {
      WHERE a.SongId IN (${ids.join()})
        AND a.ArtistId = b.id;`;
   return query(sql);
+};
+
+const mapArtists = async ids => {
+  const rows = await getArtists(ids);
+  const artists = new Map();
+
+  rows.forEach(({ SongId: id, ArtistId, name, feat, order }) => {
+    const artist = { id: ArtistId, name };
+
+    if (!artists.has(id)) {
+      artists.set(id, { artists: [], features: [] });
+    }
+
+    artists.get(id)[feat ? 'features' : 'artists'][order] = artist;
+  });
+
+  return artists;
+};
+
+const addArtists = async songs => {
+  const artists = await mapArtists(songs.map(s => s.id));
+  const map = new Map(songs.map(s => [s.id, s]));
+
+  artists.forEach((entry, id) => {
+    map.get(id).artists = entry.artists;
+    map.get(id).features = entry.features;
+  });
 };
 
 const getAlbums = async ids => {
@@ -25,6 +62,18 @@ const getAlbums = async ids => {
        AND a.AlbumId = b.id
   ORDER BY \`release\`;`;
   return query(sql);
+};
+
+const addAlbum = async songs => {
+  const rows = await getAlbums(songs.map(s => s.id));
+  const map = new Map(songs.map(s => [s.id, s]));
+
+  rows.forEach(({ SongId, AlbumId }) => {
+    const song = map.get(SongId);
+    if (song.albumId === undefined) {
+      song.albumId = AlbumId;
+    }
+  });
 };
 
 const mapAlbumIds = async ids => {
@@ -47,55 +96,6 @@ const mapAlbumIds = async ids => {
   });
 
   return albums;
-};
-
-const mapArtists = async ids => {
-  const rows = await getArtists(ids);
-  const artists = new Map();
-
-  rows.forEach(({ SongId: id, ArtistId, name, feat, order }) => {
-    const artist = { id: ArtistId, name };
-
-    if (!artists.has(id)) {
-      artists.set(id, { artists: [], features: [] });
-    }
-
-    artists.get(id)[feat ? 'features' : 'artists'][order] = artist;
-  });
-
-  return artists;
-};
-
-const addDetails = async songs => {
-  const rows = await getDetails(songs.map(s => s.id));
-  const map = new Map(songs.map(s => [s.id, s]));
-
-  rows.forEach(({ id, title, plays }) => {
-    map.get(id).title = title;
-    map.get(id).plays = plays;
-  });
-};
-
-const addArtists = async songs => {
-  const artists = await mapArtists(songs.map(s => s.id));
-  const map = new Map(songs.map(s => [s.id, s]));
-
-  artists.forEach((entry, id) => {
-    map.get(id).artists = entry.artists;
-    map.get(id).features = entry.features;
-  });
-};
-
-const addAlbum = async songs => {
-  const rows = await getAlbums(songs.map(s => s.id));
-  const map = new Map(songs.map(s => [s.id, s]));
-
-  rows.forEach(({ SongId, AlbumId }) => {
-    const song = map.get(SongId);
-    if (song.albumId === undefined) {
-      song.albumId = AlbumId;
-    }
-  });
 };
 
 const addMinRank = async songs => {
@@ -149,14 +149,20 @@ const addFavorite = async songs => {
 };
 
 module.exports = {
-  addAlbum,
-  addArtists,
-  addDetails,
-  addFavorite,
-  addMinRank,
-  getAlbums,
-  getArtists,
   getDetails,
+  addDetails,
+
+  getArtists,
+  mapArtists,
+  addArtists,
+
+  getAlbums,
+
+  addAlbum,
+
   mapAlbumIds,
-  mapArtists
+
+  addMinRank,
+
+  addFavorite
 };

@@ -10,6 +10,25 @@ const songRows = new Map([
   [300, { id: 300, title: 'New Romantics', plays: 19 }],
   [381, { id: 381, title: 'BORN HATER', plays: 24 }]
 ]);
+
+test.each(indexes)('get %d details', async count => {
+  const ids = songIds.slice(0, count);
+  const rows = await Songs.getDetails(ids);
+
+  rows.forEach(row => {
+    expect(row).toEqual(songRows.get(row.id));
+  });
+});
+
+test.each(indexes)('add %d details', async count => {
+  const songs = songIds.slice(0, count).map(s => ({ id: s }));
+  await Songs.addDetails(songs);
+
+  songs.forEach(song => {
+    expect(song).toEqual(songRows.get(song.id));
+  });
+});
+
 const songArtists = new Map([
   ['1.0', { ArtistId: 1, SongId: 1, feat: 0, name: 'Apink', order: 0 }],
   [
@@ -45,6 +64,17 @@ const songFeatures = new Map([
   ['381.3', { ArtistId: 228, SongId: 381, feat: 1, name: '송민호', order: 3 }],
   ['381.4', { ArtistId: 177, SongId: 381, feat: 1, name: 'BOBBY', order: 4 }]
 ]);
+
+test.each(indexes)('get %d artists', async count => {
+  const ids = songIds.slice(0, count);
+  const rows = await Songs.getArtists(ids);
+
+  rows.forEach(row => {
+    const map = row.feat ? songFeatures : songArtists;
+    expect(row).toEqual(map.get(`${row.SongId}.${row.order}`));
+  });
+});
+
 const songArtistMap = new Map([
   [1, { artists: [1], features: [] }],
   [10, { artists: [3, 6], features: [] }],
@@ -54,6 +84,31 @@ const songArtistMap = new Map([
   [381, { artists: [224], features: [108, 117, 229, 228, 177] }],
   [1000, { artists: [443], features: [] }]
 ]);
+
+test('map artists', async () => {
+  const map = await Songs.mapArtists(songIds);
+  map.forEach((value, key) => {
+    expect(value.artists.map(a => a.id)).toEqual(
+      songArtistMap.get(key).artists
+    );
+    expect(value.features.map(a => a.id)).toEqual(
+      songArtistMap.get(key).features
+    );
+  });
+});
+
+test.each(indexes)('add %d artists', async count => {
+  const songs = songIds.slice(0, count).map(s => ({ id: s }));
+  await Songs.addArtists(songs);
+
+  songs.forEach(song => {
+    expect(song.artists.length).toBe(songArtistMap.get(song.id).artists.length);
+    expect(song.features.length).toBe(
+      songArtistMap.get(song.id).features.length
+    );
+  });
+});
+
 const songAlbums = new Map([
   [
     '1.1',
@@ -84,6 +139,34 @@ const songAlbums = new Map([
     { AlbumId: 62, SongId: 381, release: new Date('2014-10-21T00:00:00.000Z') }
   ]
 ]);
+
+test.each(indexes)('get %d albums', async count => {
+  const ids = songIds.slice(0, count);
+  const rows = await Songs.getAlbums(ids);
+
+  rows.forEach(row => {
+    expect(row).toEqual(songAlbums.get(`${row.SongId}.${row.AlbumId}`));
+  });
+});
+
+const songOldestAlbumIds = new Map([
+  [1, 1],
+  [10, 2],
+  [44, 5],
+  [100, 11],
+  [300, 50],
+  [381, 62]
+]);
+
+test.each(indexes)('add %d albums', async count => {
+  const songs = songIds.slice(0, count).map(s => ({ id: s }));
+  await Songs.addAlbum(songs);
+
+  songs.forEach(song => {
+    expect(song.albumId).toBe(songOldestAlbumIds.get(song.id));
+  });
+});
+
 const songAlbumIds = new Map([
   [1, [{ id: 1, disk: 1, track: 1 }]],
   [10, [{ id: 2, disk: 1, track: 9 }]],
@@ -98,60 +181,6 @@ const songAlbumIds = new Map([
   [300, [{ id: 50, disk: 1, track: 16 }]],
   [381, [{ id: 62, disk: 1, track: 8 }]]
 ]);
-const songOldestAlbumIds = new Map([
-  [1, 1],
-  [10, 2],
-  [44, 5],
-  [100, 11],
-  [300, 50],
-  [381, 62]
-]);
-const songMinRanks = new Map([
-  [1, 1],
-  [10, 7],
-  [44, 1],
-  [381, 2]
-]);
-
-test.each(indexes)('get %d details', async count => {
-  const ids = songIds.slice(0, count);
-  const rows = await Songs.getDetails(ids);
-
-  rows.forEach(row => {
-    expect(row).toEqual(songRows.get(row.id));
-  });
-});
-
-test.each(indexes)('get %d artists', async count => {
-  const ids = songIds.slice(0, count);
-  const rows = await Songs.getArtists(ids);
-
-  rows.forEach(row => {
-    const map = row.feat ? songFeatures : songArtists;
-    expect(row).toEqual(map.get(`${row.SongId}.${row.order}`));
-  });
-});
-
-test('map artists', async () => {
-  const map = await Songs.mapArtists(songIds);
-  map.forEach((value, key) => {
-    expect(value.artists.map(a => a.id)).toEqual(
-      songArtistMap.get(key).artists
-    );
-    expect(value.features.map(a => a.id)).toEqual(
-      songArtistMap.get(key).features
-    );
-  });
-});
-
-test.each(indexes)('get %d albums', async count => {
-  const ids = songIds.slice(0, count);
-  const rows = await Songs.getAlbums(ids);
-
-  rows.forEach(row => {
-    expect(row).toEqual(songAlbums.get(`${row.SongId}.${row.AlbumId}`));
-  });
-});
 
 test.each(indexes)('get %d album ids', async count => {
   const ids = songIds.slice(0, count);
@@ -162,35 +191,12 @@ test.each(indexes)('get %d album ids', async count => {
   });
 });
 
-test.each(indexes)('add %d details', async count => {
-  const songs = songIds.slice(0, count).map(s => ({ id: s }));
-  await Songs.addDetails(songs);
-
-  songs.forEach(song => {
-    expect(song).toEqual(songRows.get(song.id));
-  });
-});
-
-test.each(indexes)('add %d artists', async count => {
-  const songs = songIds.slice(0, count).map(s => ({ id: s }));
-  await Songs.addArtists(songs);
-
-  songs.forEach(song => {
-    expect(song.artists.length).toBe(songArtistMap.get(song.id).artists.length);
-    expect(song.features.length).toBe(
-      songArtistMap.get(song.id).features.length
-    );
-  });
-});
-
-test.each(indexes)('add %d albums', async count => {
-  const songs = songIds.slice(0, count).map(s => ({ id: s }));
-  await Songs.addAlbum(songs);
-
-  songs.forEach(song => {
-    expect(song.albumId).toBe(songOldestAlbumIds.get(song.id));
-  });
-});
+const songMinRanks = new Map([
+  [1, 1],
+  [10, 7],
+  [44, 1],
+  [381, 2]
+]);
 
 test.each(indexes)('add %d min rank', async count => {
   const songs = songIds.slice(0, count).map(s => ({ id: s }));
