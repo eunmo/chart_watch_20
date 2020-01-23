@@ -85,9 +85,11 @@ const mapSongs = async ids => {
 };
 
 module.exports = {
-  addArtists,
   addDetails,
   getDetails,
+
   mapArtists,
+  addArtists,
+
   mapSongs
 };

@@ -55,6 +55,24 @@ const albumRows = new Map([
   ]
 ]);
 
+test.each(indexes)('get %d details', async count => {
+  const ids = albumIds.slice(0, count);
+  const rows = await Albums.getDetails(ids);
+
+  rows.forEach(row => {
+    expect(row).toEqual(albumRows.get(row.id));
+  });
+});
+
+test.each(indexes)('add %d details', async count => {
+  const albums = albumIds.slice(0, count).map(a => ({ id: a }));
+  await Albums.addDetails(albums);
+
+  albums.forEach(album => {
+    expect(album).toEqual(albumRows.get(album.id));
+  });
+});
+
 const albumArtists = new Map([
   [1, [{ id: 1, name: 'Apink' }]],
   [10, [{ id: 58, name: 'One Direction' }]],
@@ -81,6 +99,23 @@ const albumArtists = new Map([
   ],
   [100, [{ id: 300, name: 'Rixton' }]]
 ]);
+
+test('map artists', async () => {
+  const map = await Albums.mapArtists(albumIds);
+
+  map.forEach((value, key) => {
+    expect(value).toEqual(albumArtists.get(key));
+  });
+});
+
+test.each(indexes)('add %d artists', async count => {
+  const albums = albumIds.slice(0, count).map(a => ({ id: a }));
+  await Albums.addArtists(albums);
+
+  albums.forEach(album => {
+    expect(album.artists).toEqual(albumArtists.get(album.id));
+  });
+});
 
 const albumSongs = new Map([
   [
@@ -123,45 +158,10 @@ const albumSongs = new Map([
   ]
 ]);
 
-test.each(indexes)('get %d details', async count => {
-  const ids = albumIds.slice(0, count);
-  const rows = await Albums.getDetails(ids);
-
-  rows.forEach(row => {
-    expect(row).toEqual(albumRows.get(row.id));
-  });
-});
-
-test('map artists', async () => {
-  const map = await Albums.mapArtists(albumIds);
-
-  map.forEach((value, key) => {
-    expect(value).toEqual(albumArtists.get(key));
-  });
-});
-
 test('map songs', async () => {
   const map = await Albums.mapSongs(albumIds);
 
   map.forEach((value, key) => {
     expect(value).toEqual(albumSongs.get(key));
-  });
-});
-
-test.each(indexes)('add %d details', async count => {
-  const albums = albumIds.slice(0, count).map(a => ({ id: a }));
-  await Albums.addDetails(albums);
-
-  albums.forEach(album => {
-    expect(album).toEqual(albumRows.get(album.id));
-  });
-});
-
-test.each(indexes)('add %d artists', async count => {
-  const albums = albumIds.slice(0, count).map(a => ({ id: a }));
-  await Albums.addArtists(albums);
-
-  albums.forEach(album => {
-    expect(album.artists).toEqual(albumArtists.get(album.id));
   });
 });
