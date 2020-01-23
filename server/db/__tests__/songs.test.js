@@ -122,7 +122,7 @@ test.each(indexes)('get %d details', async count => {
   });
 });
 
-test.each([1, 2, 3, 4, 5])('get %d artists', async count => {
+test.each(indexes)('get %d artists', async count => {
   const ids = songIds.slice(0, count);
   const rows = await Songs.getArtists(ids);
 
@@ -144,7 +144,7 @@ test('map artists', async () => {
   });
 });
 
-test.each([1, 2, 3, 4, 5])('get %d albums', async count => {
+test.each(indexes)('get %d albums', async count => {
   const ids = songIds.slice(0, count);
   const rows = await Songs.getAlbums(ids);
 
@@ -153,7 +153,7 @@ test.each([1, 2, 3, 4, 5])('get %d albums', async count => {
   });
 });
 
-test.each([1, 2, 3, 4, 5])('get %d album ids', async count => {
+test.each(indexes)('get %d album ids', async count => {
   const ids = songIds.slice(0, count);
   const map = await Songs.mapAlbumIds(ids);
 
@@ -162,7 +162,7 @@ test.each([1, 2, 3, 4, 5])('get %d album ids', async count => {
   });
 });
 
-test.each([1, 2, 3, 4, 5])('add %d details', async count => {
+test.each(indexes)('add %d details', async count => {
   const songs = songIds.slice(0, count).map(s => ({ id: s }));
   await Songs.addDetails(songs);
 
@@ -171,7 +171,7 @@ test.each([1, 2, 3, 4, 5])('add %d details', async count => {
   });
 });
 
-test.each([1, 2, 3, 4, 5])('add %d artists', async count => {
+test.each(indexes)('add %d artists', async count => {
   const songs = songIds.slice(0, count).map(s => ({ id: s }));
   await Songs.addArtists(songs);
 
@@ -183,7 +183,7 @@ test.each([1, 2, 3, 4, 5])('add %d artists', async count => {
   });
 });
 
-test.each([1, 2, 3, 4, 5])('add %d albums', async count => {
+test.each(indexes)('add %d albums', async count => {
   const songs = songIds.slice(0, count).map(s => ({ id: s }));
   await Songs.addAlbum(songs);
 
@@ -192,7 +192,7 @@ test.each([1, 2, 3, 4, 5])('add %d albums', async count => {
   });
 });
 
-test.each([1, 2, 3, 4, 5])('add %d min rank', async count => {
+test.each(indexes)('add %d min rank', async count => {
   const songs = songIds.slice(0, count).map(s => ({ id: s }));
   await Songs.addMinRank(songs);
 
@@ -201,7 +201,7 @@ test.each([1, 2, 3, 4, 5])('add %d min rank', async count => {
   });
 });
 
-test.each([1, 2, 3, 4, 5])('add %d favorite', async count => {
+test.each(indexes)('add %d favorite', async count => {
   const songs = songIds.slice(0, count).map(s => ({ id: s }));
   await Songs.addFavorite(songs);
 
