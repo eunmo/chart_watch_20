@@ -8,25 +8,21 @@ const getNames = async ids => {
   return query(sql);
 };
 
+const addNames = async artists => {
+  const rows = await getNames(artists.map(a => a.id));
+  const map = new Map(artists.map(a => [a.id, a]));
+
+  rows.forEach(({ id, name, nameNorm }) => {
+    map.get(id).name = name;
+    map.get(id).nameNorm = nameNorm;
+  });
+};
+
 const getDetail = async id => {
   const sql = `
     SELECT name, gender, \`type\`, origin
       FROM Artists
      WHERE id = ${id};`;
-  return query(sql);
-};
-
-const getAlbumsAndSongs = ids => {
-  const sql = `
-    SELECT ArtistId, b.AlbumId, SongId, disk, track
-      FROM AlbumArtists a, AlbumSongs b
-     WHERE a.ArtistId in (${ids.join()})
-       AND a.AlbumId = b.AlbumId
-    UNION
-    SELECT ArtistId, AlbumId, a.SongId, disk, track
-      FROM SongArtists a, AlbumSongs b
-     WHERE a.ArtistId in (${ids.join()})
-       AND a.SongId = b.SongId;`;
   return query(sql);
 };
 
@@ -71,21 +67,28 @@ const mapBs = async ids => {
   return Bs;
 };
 
-const addNames = async artists => {
-  const rows = await getNames(artists.map(a => a.id));
-  const map = new Map(artists.map(a => [a.id, a]));
-
-  rows.forEach(({ id, name, nameNorm }) => {
-    map.get(id).name = name;
-    map.get(id).nameNorm = nameNorm;
-  });
+const getAlbumsAndSongs = ids => {
+  const sql = `
+    SELECT ArtistId, b.AlbumId, SongId, disk, track
+      FROM AlbumArtists a, AlbumSongs b
+     WHERE a.ArtistId in (${ids.join()})
+       AND a.AlbumId = b.AlbumId
+    UNION
+    SELECT ArtistId, AlbumId, a.SongId, disk, track
+      FROM SongArtists a, AlbumSongs b
+     WHERE a.ArtistId in (${ids.join()})
+       AND a.SongId = b.SongId;`;
+  return query(sql);
 };
 
 module.exports = {
-  addNames,
-  getA,
-  getAlbumsAndSongs,
   getNames,
+  addNames,
+
   getDetail,
-  mapBs
+
+  getA,
+  mapBs,
+
+  getAlbumsAndSongs
 };

@@ -9,28 +9,6 @@ const artistNames = new Map([
   [317, { id: 317, name: '정은지', nameNorm: '정은지' }]
 ]);
 
-const artistDetails = new Map([
-  [1, { name: 'Apink', gender: 'Female', type: 'Group', origin: 'Korea' }],
-  [10, { name: 'Zedd', gender: 'Male', type: 'Solo', origin: 'Russia' }],
-  [100, { name: '10cm', gender: 'Male', type: 'Duet', origin: 'Korea' }],
-  [317, { name: '정은지', gender: 'Female', type: 'Solo', origin: 'Korea' }]
-]);
-
-const artistAlbumsAndSongsCount = new Map([
-  [1, 49],
-  [2, 66],
-  [3, 89],
-  [4, 105]
-]);
-
-const artistAs = new Map([
-  ['1.317', { id: 317, type: 'm', order: null, name: '정은지' }],
-  ['100.769', { id: 769, type: 'p', order: 1, name: '센치한 하하' }],
-  ['100.798', { id: 798, type: 'm', order: null, name: '권정열' }]
-]);
-
-const artistBs = new Map([[317, new Map([['m', { id: 1, name: 'Apink' }]])]]);
-
 test.each(indexes)('get %d names', async count => {
   const ids = artistIds.slice(0, count);
   const rows = await Artists.getNames(ids);
@@ -41,6 +19,22 @@ test.each(indexes)('get %d names', async count => {
   });
 });
 
+test.each(indexes)('add %d names', async count => {
+  const artists = artistIds.slice(0, count).map(a => ({ id: a }));
+  await Artists.addNames(artists);
+
+  artists.forEach(artist => {
+    expect(artist).toEqual(artistNames.get(artist.id));
+  });
+});
+
+const artistDetails = new Map([
+  [1, { name: 'Apink', gender: 'Female', type: 'Group', origin: 'Korea' }],
+  [10, { name: 'Zedd', gender: 'Male', type: 'Solo', origin: 'Russia' }],
+  [100, { name: '10cm', gender: 'Male', type: 'Duet', origin: 'Korea' }],
+  [317, { name: '정은지', gender: 'Female', type: 'Solo', origin: 'Korea' }]
+]);
+
 test.each(artistIds)('get %d details', async id => {
   const rows = await Artists.getDetail(id);
 
@@ -50,12 +44,11 @@ test.each(artistIds)('get %d details', async id => {
   });
 });
 
-test.each(indexes)('get %d albums and songs', async count => {
-  const ids = artistIds.slice(0, count);
-  const rows = await Artists.getAlbumsAndSongs(ids);
-
-  expect(rows.length).toBe(artistAlbumsAndSongsCount.get(count));
-});
+const artistAs = new Map([
+  ['1.317', { id: 317, type: 'm', order: null, name: '정은지' }],
+  ['100.769', { id: 769, type: 'p', order: 1, name: '센치한 하하' }],
+  ['100.798', { id: 798, type: 'm', order: null, name: '권정열' }]
+]);
 
 test.each(artistIds)('get %d A', async id => {
   const rows = await Artists.getA(id);
@@ -65,6 +58,8 @@ test.each(artistIds)('get %d A', async id => {
   });
 });
 
+const artistBs = new Map([[317, new Map([['m', { id: 1, name: 'Apink' }]])]]);
+
 test('map Bs', async () => {
   const map = await Artists.mapBs(artistIds);
 
@@ -73,11 +68,16 @@ test('map Bs', async () => {
   });
 });
 
-test.each(indexes)('add %d names', async count => {
-  const artists = artistIds.slice(0, count).map(a => ({ id: a }));
-  await Artists.addNames(artists);
+const artistAlbumsAndSongsCount = new Map([
+  [1, 49],
+  [2, 66],
+  [3, 89],
+  [4, 105]
+]);
 
-  artists.forEach(artist => {
-    expect(artist).toEqual(artistNames.get(artist.id));
-  });
+test.each(indexes)('get %d albums and songs', async count => {
+  const ids = artistIds.slice(0, count);
+  const rows = await Artists.getAlbumsAndSongs(ids);
+
+  expect(rows.length).toBe(artistAlbumsAndSongsCount.get(count));
 });
