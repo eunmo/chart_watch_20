@@ -3,7 +3,7 @@ const mysql = require('mysql');
 const dbconfig = require('./db.json');
 
 const pool = mysql.createPool({
-  connectionLimit: 100, // important
+  connectionLimit: 10, // important
   host: dbconfig.host,
   user: dbconfig.user,
   password: dbconfig.password,
@@ -16,12 +16,19 @@ const pool = mysql.createPool({
 const query = async sql => {
   try {
     const promise = new Promise((resolve, reject) => {
-      pool.query(sql, (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
+      pool.getConnection((err, connection) => {
+        if (err) {
+          reject(err);
         }
+
+        connection.query(sql, (error, results) => {
+          connection.release();
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        });
       });
     });
     const rows = await promise;
