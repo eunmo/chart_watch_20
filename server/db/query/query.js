@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 
-const dbconfig = require('./db.json');
+const dbconfig = require('../db.json');
 
 const pool = mysql.createPool({
   connectionLimit: 10, // important
@@ -9,8 +9,7 @@ const pool = mysql.createPool({
   password: dbconfig.password,
   database: dbconfig.database,
   debug: false,
-  timezone: 'UTC+0',
-  multipleStatements: true
+  timezone: 'UTC+0'
 });
 
 const query = async sql => {

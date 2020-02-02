@@ -1,5 +1,4 @@
 {
-  "uri": "mysql://music:music@localhost:3306/music",
   "host": "localhost",
   "user": "music",
   "password": "music",
