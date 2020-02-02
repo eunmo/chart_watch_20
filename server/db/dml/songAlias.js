@@ -5,15 +5,15 @@ const {
 } = require('./alias.js');
 
 const add = async (alias, chart, id) => {
-  return addAlias('Artist', alias, chart, id);
+  return addAlias('Song', alias, chart, id);
 };
 
 const remove = async id => {
-  return removeAlias('Artist', id);
+  return removeAlias('Song', id);
 };
 
 const update = async (id, alias, chart) => {
-  return updateAlias('Artist', id, alias, chart);
+  return updateAlias('Song', id, alias, chart);
 };
 
 module.exports = {
