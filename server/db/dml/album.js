@@ -17,11 +17,10 @@ const add = async (title, release, format) => {
 const update = async (id, title, release, format, format2) => {
   const result = await dml(`
      UPDATE Albums
-        SET
-      title='${title}',
-\`release\`='${toDateString(release)}',
-     format=${format === null ? 'NULL' : `'${format}'`},
-    format2=${format2 === null ? 'NULL' : `'${format2}'`}
+        SET title='${title}',
+            \`release\`='${toDateString(release)}',
+            format=${format === null ? 'NULL' : `'${format}'`},
+            format2=${format2 === null ? 'NULL' : `'${format2}'`}
      WHERE id=${id};`);
 
   return result.changedRows === 1;

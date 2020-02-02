@@ -59,6 +59,9 @@ test.each([
 test('get new ID', async () => {
   const id = await findOrCreate('f', 'f');
   expect(id).toBe(4);
+
+  const rows = await query('SELECT * FROM Artists WHERE id=4');
+  expect(rows.length).toBe(1);
 });
 
 test.each([
