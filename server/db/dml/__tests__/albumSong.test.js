@@ -19,7 +19,7 @@ afterAll(async () => {
   await dml('DROP TABLE IF EXISTS AlbumSongs;');
 });
 
-test.each([[1, 1, 1, 1]])('add', async (disk, track, song, album) => {
+test.each([[1, 2, 3, 4]])('add', async (disk, track, song, album) => {
   await add(disk, track, song, album);
 
   const rows = await query('SELECT * FROM AlbumSongs');
