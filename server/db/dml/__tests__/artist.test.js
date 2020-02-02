@@ -61,19 +61,6 @@ test('get new ID', async () => {
   expect(id).toBe(4);
 });
 
-test('update', async () => {
-  const result = await update(1, 'Korea', 'Solo', 'Male', false);
-  expect(result).toBeTruthy();
-
-  const rows = await query('SELECT * FROM Artists WHERE id=1;');
-  expect(rows.length).toBe(1);
-  const row = rows[0];
-  expect(row.origin).toBe('Korea');
-  expect(row.type).toBe('Solo');
-  expect(row.gender).toBe('Male');
-  expect(row.favorites).toBe(null);
-});
-
 test.each([
   ['Korea', 'Solo', 'Male', true, 1],
   ['Korea', 'Solo', 'Male', false, null],
