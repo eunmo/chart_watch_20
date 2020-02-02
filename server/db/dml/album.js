@@ -5,7 +5,7 @@ function toDateString(date) {
 }
 
 const add = async (title, release, format) => {
-  const formatS = format === null ? 'NULL' : `'${format}'`;
+  const formatS = format === null ? null : `'${format}'`;
 
   const result = await dml(`
     INSERT INTO Albums (title, \`release\`, format)
@@ -19,8 +19,8 @@ const update = async (id, title, release, format, format2) => {
      UPDATE Albums
         SET title='${title}',
             \`release\`='${toDateString(release)}',
-            format=${format === null ? 'NULL' : `'${format}'`},
-            format2=${format2 === null ? 'NULL' : `'${format2}'`}
+            format=${format === null ? null : `'${format}'`},
+            format2=${format2 === null ? null : `'${format2}'`}
      WHERE id=${id};`);
 
   return result.changedRows === 1;

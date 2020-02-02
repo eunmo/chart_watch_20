@@ -31,10 +31,10 @@ const findOrCreate = async (name, nameNorm) => {
 const update = async (id, origin, type, gender, favorites) => {
   const result = await dml(`
     UPDATE Artists
-       SET origin=${origin === null ? 'NULL' : `'${origin}'`},
-           type=${type === null ? 'NULL' : `'${type}'`},
-           gender=${gender === null ? 'NULL' : `'${gender}'`},
-           favorites=${favorites === true ? 1 : 'NULL'}
+       SET origin=${origin === null ? null : `'${origin}'`},
+           type=${type === null ? null : `'${type}'`},
+           gender=${gender === null ? null : `'${gender}'`},
+           favorites=${favorites === true ? 1 : null}
      WHERE id=${id};`);
 
   return result.changedRows === 1;
