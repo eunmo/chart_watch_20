@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 
-const dbconfig = require('../db.json');
+const dbconfig = require('./db.json');
 
 const pool = mysql.createPool({
   connectionLimit: 10, // important
@@ -12,7 +12,7 @@ const pool = mysql.createPool({
   timezone: 'UTC+0'
 });
 
-const query = async sql => {
+const exec = async sql => {
   try {
     const promise = new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
@@ -38,4 +38,4 @@ const query = async sql => {
   }
 };
 
-module.exports = { query };
+module.exports = { dml: exec, query: exec };

@@ -1,4 +1,4 @@
-const { query } = require('./query.js');
+const { query } = require('../query.js');
 
 const getWeeks = date => {
   const mm = date.getMonth();

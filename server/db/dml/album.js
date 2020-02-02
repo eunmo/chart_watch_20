@@ -1,4 +1,4 @@
-const { dml } = require('./dml.js');
+const { dml } = require('../query.js');
 
 function toDateString(date) {
   return date.toISOString().substring(0, 10);

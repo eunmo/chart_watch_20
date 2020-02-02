@@ -1,4 +1,4 @@
-const { dml } = require('./dml.js');
+const { dml } = require('../query.js');
 
 const add = async (type, alias, chart, id) => {
   const result = await dml(`

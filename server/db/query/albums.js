@@ -1,4 +1,4 @@
-const { query } = require('./query.js');
+const { query } = require('../query.js');
 const { mapBs } = require('./artists.js');
 
 const getDetails = async ids => {

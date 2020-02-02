@@ -1,4 +1,4 @@
-const { dml } = require('./dml.js');
+const { dml } = require('../query.js');
 
 const add = async (title, time, bitrate) => {
   const result = await dml(`

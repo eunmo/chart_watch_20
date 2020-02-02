@@ -1,4 +1,4 @@
-const { dml, query } = require('../dml.js');
+const { dml, query } = require('../../query.js');
 const { add, remove, update } = require('../albumArtist.js');
 
 jest.mock('../../db.json', () => {
