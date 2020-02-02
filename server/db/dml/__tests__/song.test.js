@@ -1,5 +1,5 @@
 const { dml, query } = require('../dml.js');
-const { add, update } = require('../song.js');
+const { add, recordPlay, update } = require('../song.js');
 
 jest.mock('../../db.json', () => {
   return {
@@ -56,4 +56,18 @@ test.each([
   const row = rows[0];
   expect(row.title).toBe(title);
   expect(row.plays).toBe(plays);
+});
+
+test('record play', async () => {
+  const now = new Date();
+  now.setMilliseconds(0);
+  const result = await recordPlay(1, 1, now);
+  expect(result).toBe(true);
+
+  const rows = await query('SELECT * FROM Songs WHERE id=1');
+  expect(rows.length).toBe(1);
+
+  const row = rows[0];
+  expect(row.plays).toBe(1);
+  expect(row.lastPlayed).toStrictEqual(now);
 });

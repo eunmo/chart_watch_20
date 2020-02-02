@@ -11,9 +11,26 @@ const add = async (title, time, bitrate) => {
 const update = async (id, title, plays) => {
   const result = await dml(`
     UPDATE Songs
-       SET
-     title='${title}',
-     plays=${plays}
+       SET title='${title}',
+           plays=${plays}
+     WHERE id=${id};`);
+
+  return result.changedRows === 1;
+};
+
+function toTimestamp(date) {
+  const time = new Date(date);
+  return time
+    .toISOString()
+    .slice(0, 19)
+    .replace('T', ' ');
+}
+
+const recordPlay = async (id, plays, lastPlayed) => {
+  const result = await dml(`
+    UPDATE Songs
+       SET plays=${plays},
+           lastPlayed='${toTimestamp(lastPlayed)}'
      WHERE id=${id};`);
 
   return result.changedRows === 1;
@@ -21,5 +38,6 @@ const update = async (id, title, plays) => {
 
 module.exports = {
   add,
-  update
+  update,
+  recordPlay
 };
