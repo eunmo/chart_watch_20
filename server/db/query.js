@@ -9,10 +9,10 @@ const pool = mysql.createPool({
   password: dbconfig.password,
   database: dbconfig.database,
   debug: false,
-  timezone: 'UTC+0'
+  timezone: 'UTC+0',
 });
 
-const exec = async sql => {
+const exec = async (sql) => {
   try {
     const promise = new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {

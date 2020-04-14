@@ -1,6 +1,6 @@
 const { query } = require('../query.js');
 
-const getNames = async ids => {
+const getNames = async (ids) => {
   const sql = `
     SELECT id, name, nameNorm
       FROM Artists
@@ -8,9 +8,9 @@ const getNames = async ids => {
   return query(sql);
 };
 
-const addNames = async artists => {
-  const rows = await getNames(artists.map(a => a.id));
-  const map = new Map(artists.map(a => [a.id, a]));
+const addNames = async (artists) => {
+  const rows = await getNames(artists.map((a) => a.id));
+  const map = new Map(artists.map((a) => [a.id, a]));
 
   rows.forEach(({ id, name, nameNorm }) => {
     map.get(id).name = name;
@@ -18,7 +18,7 @@ const addNames = async artists => {
   });
 };
 
-const getDetail = async id => {
+const getDetail = async (id) => {
   const sql = `
     SELECT name, gender, \`type\`, origin
       FROM Artists
@@ -26,7 +26,7 @@ const getDetail = async id => {
   return query(sql);
 };
 
-const getA = id => {
+const getA = (id) => {
   const sql = `
     SELECT ar.\`type\`, ar.order, a.name, a.id
       FROM ArtistRelations ar, Artists a
@@ -35,7 +35,7 @@ const getA = id => {
   return query(sql);
 };
 
-const mapBs = async ids => {
+const mapBs = async (ids) => {
   const sql = `
     SELECT ar.a, ar.b, ar.\`type\`, ar.order, a.name
       FROM ArtistRelations ar, Artists a
@@ -67,7 +67,7 @@ const mapBs = async ids => {
   return Bs;
 };
 
-const getAlbumsAndSongs = ids => {
+const getAlbumsAndSongs = (ids) => {
   const sql = `
     SELECT ArtistId, b.AlbumId, SongId, disk, track
       FROM AlbumArtists a, AlbumSongs b
@@ -90,5 +90,5 @@ module.exports = {
   getA,
   mapBs,
 
-  getAlbumsAndSongs
+  getAlbumsAndSongs,
 };

@@ -28,5 +28,5 @@ const update = async (id, title, release, format, format2) => {
 
 module.exports = {
   add,
-  update
+  update,
 };

@@ -1,6 +1,6 @@
 const { query } = require('../query.js');
 
-const getWeeks = date => {
+const getWeeks = (date) => {
   const mm = date.getMonth();
   const dd = date.getDate();
   const dates = [];
@@ -14,7 +14,7 @@ const getWeeks = date => {
   return dates.join(',');
 };
 
-const getQuery = limit => {
+const getQuery = (limit) => {
   return `
     SELECT SongId as id
       FROM SingleCharts
@@ -24,7 +24,7 @@ const getQuery = limit => {
   ORDER BY week DESC, \`rank\`;`;
 };
 
-const getSongs = limit => {
+const getSongs = (limit) => {
   return query(getQuery(limit));
 };
 
@@ -33,5 +33,5 @@ module.exports = {
 
   getQuery,
 
-  getSongs
+  getSongs,
 };

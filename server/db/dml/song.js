@@ -20,10 +20,7 @@ const update = async (id, title, plays) => {
 
 function toTimestamp(date) {
   const time = new Date(date);
-  return time
-    .toISOString()
-    .slice(0, 19)
-    .replace('T', ' ');
+  return time.toISOString().slice(0, 19).replace('T', ' ');
 }
 
 const recordPlay = async (id, plays, lastPlayed) => {
@@ -39,5 +36,5 @@ const recordPlay = async (id, plays, lastPlayed) => {
 module.exports = {
   add,
   update,
-  recordPlay
+  recordPlay,
 };

@@ -27,5 +27,5 @@ const update = async (type, order, a, b) => {
 module.exports = {
   add,
   remove,
-  update
+  update,
 };

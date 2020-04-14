@@ -6,7 +6,7 @@ jest.mock('../../db.json', () => {
     host: 'localhost',
     user: 'music',
     password: 'music',
-    database: 'musictest'
+    database: 'musictest',
   };
 });
 
@@ -31,7 +31,7 @@ beforeEach(async () => {
 
 test.each([
   ['p', 0, 1],
-  ['m', null, 2]
+  ['m', null, 2],
 ])('add', async (type, order, A) => {
   await add(type, order, A, 3);
 
@@ -54,7 +54,7 @@ test('remove', async () => {
 test.each([
   ['p', 0],
   ['a', null],
-  ['m', null]
+  ['m', null],
 ])('update', async (type, order) => {
   const result = await update(type, order, 1, 2);
   expect(result).toBe(type !== 'm' || order !== null);

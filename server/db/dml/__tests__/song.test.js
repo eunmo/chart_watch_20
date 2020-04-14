@@ -6,7 +6,7 @@ jest.mock('../../db.json', () => {
     host: 'localhost',
     user: 'music',
     password: 'music',
-    database: 'musictest'
+    database: 'musictest',
   };
 });
 
@@ -45,7 +45,7 @@ test.each([
   ['a', 0],
   ['a', 1],
   ['b', 0],
-  ['b', 1]
+  ['b', 1],
 ])('update', async (title, plays) => {
   const result = await update(1, title, plays);
   expect(result).toBe(title !== 'a' || plays !== 0);

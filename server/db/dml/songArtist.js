@@ -27,5 +27,5 @@ const update = async (order, feat, song, artist) => {
 module.exports = {
   add,
   remove,
-  update
+  update,
 };

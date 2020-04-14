@@ -1,6 +1,6 @@
 const { dml, query } = require('../query.js');
 const {
-  Upload: { upload }
+  Upload: { upload },
 } = require('..');
 
 jest.mock('../db.json', () => {
@@ -8,7 +8,7 @@ jest.mock('../db.json', () => {
     host: 'localhost',
     user: 'music',
     password: 'music',
-    database: 'musictest'
+    database: 'musictest',
   };
 });
 
@@ -65,30 +65,30 @@ const tag1 = {
   time: 180,
   bitrate: 192,
   disk: 1,
-  track: 1
+  track: 1,
 };
 const tag2 = {
   ...tag1,
   albumArtist: ['Artist1'],
   albumArtistNorm: ['Artist1'],
   feat: [],
-  featNorm: []
+  featNorm: [],
 };
 const tag3 = {
   ...tag1,
-  disk: 0
+  disk: 0,
 };
 const tag4 = {
   ...tag1,
   albumArtist: ['Artist1', 'Artist2', 'Artist3'],
-  albumArtistNorm: ['Artist1', 'Artist2Norm', 'Artist3Norm']
+  albumArtistNorm: ['Artist1', 'Artist2Norm', 'Artist3Norm'],
 };
 
 test.each([
   ['tag1', tag1, 3, 2],
   ['tag2', tag2, 1, 1],
   ['tag3', tag3, 3, 2],
-  ['tag4', tag4, 3, 2]
+  ['tag4', tag4, 3, 2],
 ])('new %s', async (name, tag, artistCount, songArtistCount) => {
   const [songId, newAlbum] = await upload(tag);
   expect(songId).toBe(1);
@@ -131,8 +131,8 @@ test.each([
 
   rows = await query('SELECT * FROM AlbumArtists ORDER BY ArtistId');
   expect(rows.length).toBe(tag.albumArtist.length);
-  expect(rows.map(r => `Artist${r.ArtistId}`)).toStrictEqual(tag.albumArtist);
-  rows.forEach(r => {
+  expect(rows.map((r) => `Artist${r.ArtistId}`)).toStrictEqual(tag.albumArtist);
+  rows.forEach((r) => {
     expect(r.AlbumId).toBe(1);
   });
 

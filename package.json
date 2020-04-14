@@ -12,25 +12,40 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
   },
+  "devDependencies": {
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.1.3",
+    "prettier": "^2.0.4"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint:src": "eslint src/**/*.{js,jsx}",
-    "lint:server": "eslint server/*.js server/**/*.js server/**/**/*.js",
+    "lint": "eslint --fix \"src/**/*.{js,jsx}\" \"server/**/*.js\"",
     "test:server": "jest server -w 1 --watch"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "airbnb",
-      "prettier"
+      "plugin:prettier/recommended"
     ],
     "plugins": [
       "react-hooks"
     ],
     "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": true,
+          "parser": "flow"
+        }
+      ],
       "react/jsx-filename-extension": [
         1,
         {
@@ -58,14 +73,6 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "eslint-config-airbnb": "^18.1.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-react-hooks": "^3.0.0",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.1.3",
-    "prettier": "^2.0.4"
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -76,8 +83,7 @@
       "prettier --single-quote --write"
     ],
     "*.{js,jsx}": [
-      "eslint",
-      "prettier --single-quote --write"
+      "eslint --fix"
     ]
   }
 }

@@ -7,5 +7,5 @@ const add = async (disk, track, songId, albumId) => {
 };
 
 module.exports = {
-  add
+  add,
 };

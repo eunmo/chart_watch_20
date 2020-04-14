@@ -6,7 +6,7 @@ jest.mock('../../db.json', () => {
     host: 'localhost',
     user: 'music',
     password: 'music',
-    database: 'musictest'
+    database: 'musictest',
   };
 });
 
@@ -35,7 +35,7 @@ test.each([
   [0, false, 0, 100],
   [1, false, 0, 100],
   [0, true, 1, 100],
-  [1, true, 1, 100]
+  [1, true, 1, 100],
 ])('add', async (order, feat, expF, song) => {
   await add(order, feat, song, 201);
 
@@ -64,7 +64,7 @@ test.each([
   [0, false, 0, 100],
   [1, false, 0, 100],
   [0, true, 1, 100],
-  [1, true, 1, 100]
+  [1, true, 1, 100],
 ])('update', async (order, feat, expF, song) => {
   const result = await update(order, feat, song, 200);
   expect(result).toBe(order !== 0 || expF !== 0);

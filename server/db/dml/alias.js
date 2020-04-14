@@ -27,5 +27,5 @@ const update = async (type, id, alias, chart) => {
 module.exports = {
   add,
   remove,
-  update
+  update,
 };

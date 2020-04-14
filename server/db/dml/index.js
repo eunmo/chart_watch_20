@@ -19,5 +19,5 @@ module.exports = {
   ArtistRelation,
   Song,
   SongArtist,
-  SongAlias
+  SongAlias,
 };

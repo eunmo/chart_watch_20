@@ -5,7 +5,7 @@ const {
   AlbumSong,
   Artist,
   Song,
-  SongArtist
+  SongArtist,
 } = require('./dml');
 
 async function getArtists(tag, key) {
@@ -19,7 +19,7 @@ async function getArtists(tag, key) {
   return artistIds;
 }
 
-const upload = async tag => {
+const upload = async (tag) => {
   const artists = await getArtists(tag, 'artist');
   const albumArtists = await getArtists(tag, 'albumArtist');
   const feats = await getArtists(tag, 'feat');

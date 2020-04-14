@@ -1,6 +1,6 @@
 const { query } = require('../query.js');
 
-const getDetails = async ids => {
+const getDetails = async (ids) => {
   const sql = `
     SELECT id, title, plays
       FROM Songs
@@ -8,9 +8,9 @@ const getDetails = async ids => {
   return query(sql);
 };
 
-const addDetails = async songs => {
-  const rows = await getDetails(songs.map(s => s.id));
-  const map = new Map(songs.map(s => [s.id, s]));
+const addDetails = async (songs) => {
+  const rows = await getDetails(songs.map((s) => s.id));
+  const map = new Map(songs.map((s) => [s.id, s]));
 
   rows.forEach(({ id, title, plays }) => {
     map.get(id).title = title;
@@ -18,7 +18,7 @@ const addDetails = async songs => {
   });
 };
 
-const getArtists = async ids => {
+const getArtists = async (ids) => {
   const sql = `
     SELECT SongId, ArtistId, name, feat, \`order\`
       FROM SongArtists a, Artists b
@@ -27,7 +27,7 @@ const getArtists = async ids => {
   return query(sql);
 };
 
-const mapArtists = async ids => {
+const mapArtists = async (ids) => {
   const rows = await getArtists(ids);
   const artists = new Map();
 
@@ -44,9 +44,9 @@ const mapArtists = async ids => {
   return artists;
 };
 
-const addArtists = async songs => {
-  const artists = await mapArtists(songs.map(s => s.id));
-  const map = new Map(songs.map(s => [s.id, s]));
+const addArtists = async (songs) => {
+  const artists = await mapArtists(songs.map((s) => s.id));
+  const map = new Map(songs.map((s) => [s.id, s]));
 
   artists.forEach((entry, id) => {
     map.get(id).artists = entry.artists;
@@ -54,7 +54,7 @@ const addArtists = async songs => {
   });
 };
 
-const getAlbums = async ids => {
+const getAlbums = async (ids) => {
   const sql = `
     SELECT SongId, AlbumId, \`release\`
       FROM AlbumSongs a, Albums b
@@ -64,9 +64,9 @@ const getAlbums = async ids => {
   return query(sql);
 };
 
-const addAlbum = async songs => {
-  const rows = await getAlbums(songs.map(s => s.id));
-  const map = new Map(songs.map(s => [s.id, s]));
+const addAlbum = async (songs) => {
+  const rows = await getAlbums(songs.map((s) => s.id));
+  const map = new Map(songs.map((s) => [s.id, s]));
 
   rows.forEach(({ SongId, AlbumId }) => {
     const song = map.get(SongId);
@@ -76,7 +76,7 @@ const addAlbum = async songs => {
   });
 };
 
-const mapAlbumIds = async ids => {
+const mapAlbumIds = async (ids) => {
   const sql = `
     SELECT SongId, AlbumId, disk, track
       FROM AlbumSongs
@@ -98,22 +98,22 @@ const mapAlbumIds = async ids => {
   return albums;
 };
 
-const addMinRank = async songs => {
+const addMinRank = async (songs) => {
   const sql = `
     SELECT SongId id, min(\`rank\`) \`rank\`
       FROM SingleCharts
-     WHERE SongId IN (${songs.map(s => s.id).join()})
+     WHERE SongId IN (${songs.map((s) => s.id).join()})
        AND \`rank\` <= 10
   GROUP BY SongId;`;
   const rows = await query(sql);
-  const map = new Map(songs.map(s => [s.id, s]));
+  const map = new Map(songs.map((s) => [s.id, s]));
 
   rows.forEach(({ id, rank }) => {
     map.get(id).minRank = rank;
   });
 };
 
-const addFavorite = async songs => {
+const addFavorite = async (songs) => {
   const sql = `
     SELECT DISTINCT id
       FROM (SELECT SongId id
@@ -139,9 +139,9 @@ const addFavorite = async songs => {
              WHERE a.favorites = true
                AND a.id = b.b
                AND b.a = sa.ArtistId) a
-    WHERE a.id IN (${songs.map(s => s.id).join()});`;
+    WHERE a.id IN (${songs.map((s) => s.id).join()});`;
   const rows = await query(sql);
-  const map = new Map(songs.map(s => [s.id, s]));
+  const map = new Map(songs.map((s) => [s.id, s]));
 
   rows.forEach(({ id }) => {
     map.get(id).favorite = true;
@@ -164,5 +164,5 @@ module.exports = {
 
   addMinRank,
 
-  addFavorite
+  addFavorite,
 };

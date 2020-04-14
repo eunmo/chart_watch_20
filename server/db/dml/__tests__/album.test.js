@@ -6,7 +6,7 @@ jest.mock('../../db.json', () => {
     host: 'localhost',
     user: 'music',
     password: 'music',
-    database: 'musictest'
+    database: 'musictest',
   };
 });
 
@@ -34,7 +34,7 @@ const newDate = new Date(Date.UTC(2020, 1, 2));
 
 test.each([
   ['b', newDate, null],
-  ['b', newDate, 'Single']
+  ['b', newDate, 'Single'],
 ])('add', async (title, release, format) => {
   const id = await add(title, release, format);
   expect(id).toBe(2);
@@ -52,7 +52,7 @@ test.each([
   ['b', newDate, 'Single', 'Deluxe'],
   ['b', newDate, 'Single', null],
   ['b', newDate, null, 'Deluxe'],
-  ['b', newDate, null, null]
+  ['b', newDate, null, null],
 ])('update', async (title, release, format, format2) => {
   const result = await update(1, title, release, format, format2);
   expect(result).toBe(true);

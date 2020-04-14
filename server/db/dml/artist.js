@@ -69,5 +69,5 @@ const merge = async (toId, fromId) => {
 module.exports = {
   findOrCreate,
   merge,
-  update
+  update,
 };

@@ -6,7 +6,7 @@ jest.mock('../../db.json', () => {
     host: 'localhost',
     user: 'music',
     password: 'music',
-    database: 'musictest'
+    database: 'musictest',
   };
 });
 
@@ -50,7 +50,7 @@ test.each([
   ['b_', 'b_', 2],
   ['c', 'c', 3],
   ['c', 'd', 3],
-  ['d', 'd', 3]
+  ['d', 'd', 3],
 ])('get %s', async (name, nameNorm, expected) => {
   const id = await findOrCreate(name, nameNorm);
   expect(id).toBe(expected);
@@ -80,10 +80,12 @@ test.each([
   [null, null, 'Male', true, 1],
   [null, null, 'Male', false, null],
   [null, null, null, true, 1],
-  [null, null, null, false, null]
+  [null, null, null, false, null],
 ])('update', async (origin, type, gender, favorites, expectedF) => {
   const result = await update(1, origin, type, gender, favorites);
-  expect(result).toBe([origin, type, gender, expectedF].some(x => x !== null));
+  expect(result).toBe(
+    [origin, type, gender, expectedF].some((x) => x !== null)
+  );
 
   const rows = await query('SELECT * FROM Artists WHERE id=1;');
   expect(rows.length).toBe(1);

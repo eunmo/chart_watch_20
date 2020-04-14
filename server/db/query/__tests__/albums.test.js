@@ -10,8 +10,8 @@ const albumRows = new Map([
       title: 'Pink LUV',
       format: 'EP',
       format2: null,
-      release: new Date('2014-11-24T00:00:00.000Z')
-    }
+      release: new Date('2014-11-24T00:00:00.000Z'),
+    },
   ],
   [
     10,
@@ -20,8 +20,8 @@ const albumRows = new Map([
       title: 'Four',
       format: 'Studio',
       format2: null,
-      release: new Date('2014-11-18T00:00:00.000Z')
-    }
+      release: new Date('2014-11-18T00:00:00.000Z'),
+    },
   ],
   [
     25,
@@ -30,8 +30,8 @@ const albumRows = new Map([
       title: 'K팝 스타 시즌4 - 캐스팅 오디션 Part 1',
       format: 'Single',
       format2: 'Soundtrack',
-      release: new Date('2015-01-18T00:00:00.000Z')
-    }
+      release: new Date('2015-01-18T00:00:00.000Z'),
+    },
   ],
   [
     77,
@@ -40,8 +40,8 @@ const albumRows = new Map([
       title: '소유X어반자카파 (권순일&박용인) `틈`',
       format: 'Single',
       format2: null,
-      release: new Date('2014-09-26T00:00:00.000Z')
-    }
+      release: new Date('2014-09-26T00:00:00.000Z'),
+    },
   ],
   [
     100,
@@ -50,25 +50,25 @@ const albumRows = new Map([
       title: 'Me And My Broken Heart',
       format: 'EP',
       format2: null,
-      release: new Date('2014-05-14T00:00:00.000Z')
-    }
-  ]
+      release: new Date('2014-05-14T00:00:00.000Z'),
+    },
+  ],
 ]);
 
-test.each(indexes)('get %d details', async count => {
+test.each(indexes)('get %d details', async (count) => {
   const ids = albumIds.slice(0, count);
   const rows = await Albums.getDetails(ids);
 
-  rows.forEach(row => {
+  rows.forEach((row) => {
     expect(row).toEqual(albumRows.get(row.id));
   });
 });
 
-test.each(indexes)('add %d details', async count => {
-  const albums = albumIds.slice(0, count).map(a => ({ id: a }));
+test.each(indexes)('add %d details', async (count) => {
+  const albums = albumIds.slice(0, count).map((a) => ({ id: a }));
   await Albums.addDetails(albums);
 
-  albums.forEach(album => {
+  albums.forEach((album) => {
     expect(album).toEqual(albumRows.get(album.id));
   });
 });
@@ -83,21 +83,21 @@ const albumArtists = new Map([
       {
         id: 137,
         name: '소유',
-        Bs: new Map([['m', { id: 136, name: '씨스타' }]])
+        Bs: new Map([['m', { id: 136, name: '씨스타' }]]),
       },
       {
         id: 257,
         name: '권순일',
-        Bs: new Map([['m', { id: 259, name: '어반 자카파' }]])
+        Bs: new Map([['m', { id: 259, name: '어반 자카파' }]]),
       },
       {
         id: 258,
         name: '박용인',
-        Bs: new Map([['m', { id: 259, name: '어반 자카파' }]])
-      }
-    ]
+        Bs: new Map([['m', { id: 259, name: '어반 자카파' }]]),
+      },
+    ],
   ],
-  [100, [{ id: 300, name: 'Rixton' }]]
+  [100, [{ id: 300, name: 'Rixton' }]],
 ]);
 
 test('map artists', async () => {
@@ -108,11 +108,11 @@ test('map artists', async () => {
   });
 });
 
-test.each(indexes)('add %d artists', async count => {
-  const albums = albumIds.slice(0, count).map(a => ({ id: a }));
+test.each(indexes)('add %d artists', async (count) => {
+  const albums = albumIds.slice(0, count).map((a) => ({ id: a }));
   await Albums.addArtists(albums);
 
-  albums.forEach(album => {
+  albums.forEach((album) => {
     expect(album.artists).toEqual(albumArtists.get(album.id));
   });
 });
@@ -125,8 +125,8 @@ const albumSongs = new Map([
       { id: 5, disk: 1, track: 2 },
       { id: 4, disk: 1, track: 3 },
       { id: 3, disk: 1, track: 4 },
-      { id: 2, disk: 1, track: 5 }
-    ]
+      { id: 2, disk: 1, track: 5 },
+    ],
   ],
   [
     10,
@@ -142,8 +142,8 @@ const albumSongs = new Map([
       { id: 82, disk: 1, track: 9 },
       { id: 81, disk: 1, track: 10 },
       { id: 80, disk: 1, track: 11 },
-      { id: 79, disk: 1, track: 12 }
-    ]
+      { id: 79, disk: 1, track: 12 },
+    ],
   ],
   [25, [{ id: 197, disk: 1, track: 1 }]],
   [77, [{ id: 449, disk: 1, track: 1 }]],
@@ -153,9 +153,9 @@ const albumSongs = new Map([
       { id: 555, disk: 1, track: 1 },
       { id: 558, disk: 1, track: 2 },
       { id: 557, disk: 1, track: 3 },
-      { id: 556, disk: 1, track: 4 }
-    ]
-  ]
+      { id: 556, disk: 1, track: 4 },
+    ],
+  ],
 ]);
 
 test('map songs', async () => {
