@@ -1,4 +1,4 @@
-const { dml } = require('../query.js');
+const { dml } = require('@eunmo/mysql');
 
 const add = async (disk, track, songId, albumId) => {
   return dml(`

@@ -1,4 +1,4 @@
-const { dml } = require('../query.js');
+const { dml } = require('@eunmo/mysql');
 
 function toDateString(date) {
   return date.toISOString().substring(0, 10);

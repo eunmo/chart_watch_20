@@ -1,13 +1,4 @@
-const { dml, query } = require('../../query.js');
-
-jest.mock('../../db.json', () => {
-  return {
-    host: 'localhost',
-    user: 'music',
-    password: 'music',
-    database: 'musictest',
-  };
-});
+const { dml, query } = require('@eunmo/mysql');
 
 beforeEach(async () => {
   await dml('DROP TABLE IF EXISTS test;');

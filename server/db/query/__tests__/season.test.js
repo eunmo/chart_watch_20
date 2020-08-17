@@ -1,5 +1,5 @@
+const { query } = require('@eunmo/mysql');
 const Season = require('../season.js');
-const { query } = require('../../query.js');
 
 test.each([
   [

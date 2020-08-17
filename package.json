@@ -3,23 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.5.0",
-    "@testing-library/react": "^10.0.2",
-    "@testing-library/user-event": "^10.0.1",
+    "@eunmo/mysql": "^1.0.1",
     "express": "^4.17.1",
-    "mysql": "^2.18.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.3"
   },
   "devDependencies": {
-    "eslint-config-airbnb": "^18.1.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-react-hooks": "^3.0.0",
+    "@testing-library/jest-dom": "^5.11.3",
+    "@testing-library/react": "^10.4.8",
+    "@testing-library/user-event": "^12.1.1",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react-hooks": "^4.1.0",
     "husky": "^4.2.5",
-    "lint-staged": "^10.1.3",
-    "prettier": "^2.0.4"
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -27,13 +27,14 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix \"src/**/*.{js,jsx}\" \"server/**/*.js\"",
-    "test:server": "jest server -w 1 --watch"
+    "jest": "jest server -w 1 --watch --config server/jest-config.json"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "airbnb",
-      "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "prettier/react"
     ],
     "plugins": [
       "react-hooks"
@@ -46,15 +47,7 @@
           "parser": "flow"
         }
       ],
-      "react/jsx-filename-extension": [
-        1,
-        {
-          "extensions": [
-            ".test.js",
-            ".jsx"
-          ]
-        }
-      ]
+      "react/prop-types": 0
     },
     "env": {
       "browser": true,

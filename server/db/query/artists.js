@@ -1,4 +1,4 @@
-const { query } = require('../query.js');
+const { query } = require('@eunmo/mysql');
 
 const getNames = async (ids) => {
   const sql = `
